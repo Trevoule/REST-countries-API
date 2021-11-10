@@ -1,4 +1,3 @@
-import '../css/styles.css';
 import markUpCountryTpl from '../templates/markUpCountryCard.hbs'
 import API from './api-service';
 import getRefs from './getRefs';
@@ -16,9 +15,7 @@ function onSearch(e) {
   if (searchQuery !== "") {
   return API.fetchCountry(searchQuery)
     .then(country => {
-      console.log(country);
       if (country.length > 10) {
-
         notify.Message(`${country.length}`)
         return
       }
@@ -35,17 +32,15 @@ function onSearch(e) {
 }
 
 function initialize(countriesData) {
-  let countries;
-  let country = '';
-  countries = countriesData;
-  for (let i = 0; i < countries.length; i++){
-    country += `<li class ="value">${countries[i].name}</li>`
-  }
-  countryContainerRender(country);
+  const countryData = countriesData.reduce((acc, country) => {
+    acc += `<li class="value">${country.name}</li>`
+    return acc
+  },'')
+  countryContainerRender(countryData);
 }
 
 function renderCountryCard(country) {
-    const markup = markUpCountryTpl(country)
+  const markup = markUpCountryTpl(country)
   countryContainerRender(markup);
 };
 
